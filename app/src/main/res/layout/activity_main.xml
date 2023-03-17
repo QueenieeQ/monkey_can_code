@@ -1,48 +1,64 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
     <TableLayout
-        android:id="@+id/table"
+        android:id="@+id/bookTable"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/addButton">
 
         <TableRow
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@android:color/darker_gray"
-            android:padding="8dp">
+            android:background="@color/teal_700">
 
             <TextView
-                android:text="No."
-                android:textColor="@android:color/white" />
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Book ID"
+                android:textColor="@color/white"
+                android:textStyle="bold" />
 
             <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:text="Book Name"
-                android:textColor="@android:color/white" />
+                android:textColor="@color/white"
+                android:textStyle="bold" />
 
             <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:text="Author Name"
-                android:textColor="@android:color/white" />
+                android:textColor="@color/white"
+                android:textStyle="bold" />
 
             <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:text="Quantity"
-                android:textColor="@android:color/white" />
+                android:textColor="@color/white"
+                android:textStyle="bold" />
 
             <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:text="Price"
-                android:textColor="@android:color/white" />
+                android:textColor="@color/white"
+                android:textStyle="bold" />
 
         </TableRow>
 
     </TableLayout>
 
     <Button
-        android:id="@+id/new_food_button"
-        android:layout_width="match_parent"
+        android:id="@+id/addButton"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Create book"
-        android:layout_gravity="bottom"/>
+        android:text="Add New Book"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true" />
 
-</LinearLayout>
+</RelativeLayout>

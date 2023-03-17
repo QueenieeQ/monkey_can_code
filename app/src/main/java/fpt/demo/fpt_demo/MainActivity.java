@@ -2,45 +2,67 @@ package fpt.demo.fpt_demo;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
+import android.content.Context;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.TableLayout;
+import android.widget.TableRow;
+import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
-    private TableLayout mTable;
-    private Button mNewFoodButton;
-    private MyAdapter MyAdapter;
 
+    private SQLiteDatabase db;
+
+    @SuppressLint("Range")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mTable = findViewById(R.id.table);
-        mNewFoodButton = findViewById(R.id.new_food_button);
+        // Get a reference to the book table
+        TableLayout bookTable = findViewById(R.id.bookTable);
 
-        // Retrieve the data from the database
-        Cursor cursor = getDataFromDatabase();
+        // Create or open the database
+        db = openOrCreateDatabase("BooksDB", Context.MODE_PRIVATE, null);
 
-        // Sort the data in descending order of price
-        cursor = sortDataByPrice(cursor, false);
+        // Create the books table if it doesn't exist
+        db.execSQL("CREATE TABLE IF NOT EXISTS books (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, author TEXT, quantity INTEGER, price REAL)");
 
-        // Create a cursor adapter to display the data in the table
-        MyCursorAdapter adapter = new MyCursorAdapter(this, cursor);
-        adapter.bindView(mTable);
+        // Query the database for all books
+        Cursor cursor = db.rawQuery("SELECT * FROM books", null);
+
+        // Add each book to the table row by row
+        while (cursor.moveToNext()) {
+            TableRow row = new TableRow(this);
+
+            TextView idTextView = new TextView(this);
+            idTextView.setText(Integer.toString(cursor.getInt(cursor.getColumnIndex("id"))));
+            row.addView(idTextView);
+
+            TextView nameTextView = new TextView(this);
+            nameTextView.setText(cursor.getString(cursor.getColumnIndex("name")));
+            row.addView(nameTextView);
+
+            TextView authorTextView = new TextView(this);
+            authorTextView.setText(cursor.getString(cursor.getColumnIndex("author")));
+            row.addView(authorTextView);
+
+            TextView quantityTextView = new TextView(this);
+            quantityTextView.setText(Integer.toString(cursor.getInt(cursor.getColumnIndex("quantity"))));
+            row.addView(quantityTextView);
+
+            TextView priceTextView = new TextView(this);
+            priceTextView.setText(Float.toString(cursor.getFloat(cursor.getColumnIndex("price"))));
+            row.addView(priceTextView);
+
+            bookTable.addView(row);
+        }
+
+        // Close the cursor and database
+        cursor.close();
+        db.close();
     }
-
-    private Cursor getDataFromDatabase() {
-        // TODO: Implement the database query to retrieve the data
-        return null;
-    }
-
-    private Cursor sortDataByPrice(Cursor cursor, boolean ascending) {
-        // TODO: Implement the database query to sort the data by price
-        return cursor;
-    }
-
 }
-
-

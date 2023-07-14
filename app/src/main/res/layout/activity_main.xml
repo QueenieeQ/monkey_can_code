@@ -6,8 +6,10 @@
     <TableLayout
         android:id="@+id/bookTable"
         android:layout_width="match_parent"
+        android:layout_alignParentTop="true"
         android:layout_height="wrap_content"
         android:layout_above="@+id/addButton">
+
 
         <TableRow
             android:layout_width="match_parent"
@@ -17,7 +19,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Book ID"
+                android:text="ID"
                 android:textColor="@color/white"
                 android:textStyle="bold" />
 
@@ -57,7 +59,7 @@
         android:id="@+id/addButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Add New Book"
+        android:text="Add New Item"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true" />
 

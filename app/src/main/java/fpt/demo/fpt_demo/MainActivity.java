@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
         TableLayout bookTable = findViewById(R.id.bookTable);
 
         // Create or open the database
-        db = openOrCreateDatabase("BooksDB", Context.MODE_PRIVATE, null);
+        db = openOrCreateDatabase("my_books.db", Context.MODE_PRIVATE, null);
 
         // Create the books table if it doesn't exist
         db.execSQL("CREATE TABLE IF NOT EXISTS books (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, author TEXT, quantity INTEGER, price REAL)");
@@ -50,23 +50,23 @@ public class MainActivity extends AppCompatActivity {
             TableRow row = new TableRow(this);
 
             TextView idTextView = new TextView(this);
-            idTextView.setText(Integer.toString(cursor.getInt(cursor.getColumnIndex("id"))));
+            idTextView.setText(Integer.toString(cursor.getInt(cursor.getColumnIndexOrThrow("id"))));
             row.addView(idTextView);
 
             TextView nameTextView = new TextView(this);
-            nameTextView.setText(cursor.getString(cursor.getColumnIndex("name")));
+            nameTextView.setText(cursor.getString(cursor.getColumnIndexOrThrow("book_name")));
             row.addView(nameTextView);
 
             TextView authorTextView = new TextView(this);
-            authorTextView.setText(cursor.getString(cursor.getColumnIndex("author")));
+            authorTextView.setText(cursor.getString(cursor.getColumnIndexOrThrow("author_name")));
             row.addView(authorTextView);
 
             TextView quantityTextView = new TextView(this);
-            quantityTextView.setText(Integer.toString(cursor.getInt(cursor.getColumnIndex("quantity"))));
+            quantityTextView.setText(Integer.toString(cursor.getInt(cursor.getColumnIndexOrThrow("quantity"))));
             row.addView(quantityTextView);
 
             TextView priceTextView = new TextView(this);
-            priceTextView.setText(Float.toString(cursor.getFloat(cursor.getColumnIndex("price"))));
+            priceTextView.setText(Float.toString(cursor.getFloat(cursor.getColumnIndexOrThrow("price"))));
             row.addView(priceTextView);
 
             bookTable.addView(row);

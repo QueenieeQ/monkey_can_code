@@ -16,9 +16,10 @@ import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
 
+    private static final int ADD_BOOK_REQUEST_CODE = 1;
     private SQLiteDatabase db;
+    private TableLayout bookTable;
 
-    @SuppressLint("Range")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,18 +30,57 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, AddBookActivity.class);
-                startActivity(intent);
+                startActivityForResult(intent, ADD_BOOK_REQUEST_CODE);
             }
         });
 
-        // Get a reference to the book table
-        TableLayout bookTable = findViewById(R.id.bookTable);
+        bookTable = findViewById(R.id.bookTable);
 
         // Create or open the database
         db = openOrCreateDatabase("my_books.db", Context.MODE_PRIVATE, null);
 
         // Create the books table if it doesn't exist
         db.execSQL("CREATE TABLE IF NOT EXISTS books (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, author TEXT, quantity INTEGER, price REAL)");
+
+        // Add the table header
+        addTableHeader();
+
+        // Update the table
+        updateBookTable();
+    }
+
+    private void addTableHeader() {
+        TableRow headerRow = new TableRow(this);
+
+        TextView idHeaderTextView = new TextView(this);
+        idHeaderTextView.setText("id");
+        headerRow.addView(idHeaderTextView);
+
+        TextView nameHeaderTextView = new TextView(this);
+        nameHeaderTextView.setText("book_name");
+        headerRow.addView(nameHeaderTextView);
+
+        TextView authorHeaderTextView = new TextView(this);
+        authorHeaderTextView.setText("author_name");
+        headerRow.addView(authorHeaderTextView);
+
+        TextView quantityHeaderTextView = new TextView(this);
+        quantityHeaderTextView.setText("quantity");
+        headerRow.addView(quantityHeaderTextView);
+
+        TextView priceHeaderTextView = new TextView(this);
+        priceHeaderTextView.setText("price");
+        headerRow.addView(priceHeaderTextView);
+
+        bookTable.addView(headerRow);
+    }
+
+    private void updateBookTable() {
+        // Remove all rows except the header
+        int rowCount = bookTable.getChildCount();
+        for (int i = rowCount - 1; i >= 1; i--) {
+            bookTable.removeViewAt(i);
+        }
 
         // Query the database for all books
         Cursor cursor = db.rawQuery("SELECT * FROM books", null);
@@ -72,8 +112,25 @@ public class MainActivity extends AppCompatActivity {
             bookTable.addView(row);
         }
 
-        // Close the cursor and database
+        // Close the cursor
         cursor.close();
-        db.close();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == ADD_BOOK_REQUEST_CODE && resultCode == RESULT_OK) {
+            updateBookTable();
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        // Close the database
+        if (db != null && db.isOpen()) {
+            db.close();
+        }
     }
 }
+

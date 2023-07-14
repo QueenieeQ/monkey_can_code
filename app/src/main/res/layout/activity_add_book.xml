@@ -36,10 +36,11 @@
         android:id="@+id/author_name_input"
         android:layout_height="wrap_content"
         android:layout_below="@+id/author_name_label"
-        android:hint="Enter Owener name"
+        android:hint="Enter Owner name"
         android:layout_toEndOf="@id/author_name_label"
         android:layout_width="match_parent"
         android:layout_marginStart="20dp"
+
         android:inputType="text" />
 
     <TextView
